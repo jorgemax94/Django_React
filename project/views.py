@@ -9,10 +9,12 @@ from bs4 import BeautifulSoup
 
 #importando Json
 import json as json
+from django.http import HttpResponse
 
 
-def scrapyy(request):
+def scrapyy(req):
     #varáveis para armazenamento do scraping
+    Products = []
     name = []
     link = []
     price = []
@@ -36,10 +38,11 @@ def scrapyy(request):
         name.append(products.a.find('h2').text)
         price.append(products.a.find('span', class_ = 'woocommerce-Price-amount amount').text)
         link.append(products.a.find('img')['src'])
-        test_json = {
+        test_json = {"Products":{
             "name": name,
             "linkImage": link,
             "price": price
+        }
         }
 
     test_json = json.dumps(test_json)
@@ -57,5 +60,5 @@ def scrapyy(request):
     #print('##############JSON###############')
     #print(test_json)
     print('##################PANDA###########')
-    print(test_df)
-    return test_json
+    print(test_json)
+    return HttpResponse(test_json)
